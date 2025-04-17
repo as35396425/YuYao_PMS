@@ -1,0 +1,32 @@
+@model IEnumerable<MvcProgram.Models.Product>
+
+
+
+
+<h2>商品列表</h2>
+
+<ul>
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Name)</th>
+            <th>@Html.DisplayNameFor(model => model.price)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                <td>@Html.DisplayFor(modelItem => item.price) 元</td>
+                <td>@Html.ActionLink("編輯" , "edit" , new {id = item.Name})</td>
+                <td>@Html.ActionLink("刪除" , "delete" , new {id = item.Name})</td>
+                <td>@Html.ActionLink("詳情" , "detail" , new {id = item.Name})</td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+                @Html.ActionLink("新增" , "create")</td>
+
+</ul>

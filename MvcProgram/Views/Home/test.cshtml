@@ -1,0 +1,42 @@
+@model IEnumerable<MvcProgram.Models.Product>
+
+@{
+    ViewData["Title"] = "Privacy Policy";
+}
+
+
+
+<h1>@ViewData["Title"]</h1>
+
+<p>Use this page to detail your site's privacy policy.</p>
+
+<h2>使用model傳遞</h2>
+@foreach (var i in Model){
+    <label>@i.Name</label
+    <label>@i.price</label>
+
+    <br>
+}
+<h2>ViewBag傳遞</h2>
+@foreach (var i in ViewBag.List){
+    <label>@i.Name</label
+    <label>@i.price</label>
+    <br>
+}
+<h2>ViewData傳遞</h2>
+@foreach (var i in ViewData["List"] as List<Product>){
+    <label>@i.Name</label
+    <label>@i.price</label>
+    <br>
+}
+
+
+<form asp-action="Verify">
+    <label for="username">帳號：</label>
+    <input type="text" id="username" name="username">
+
+    <label for="password">密碼：</label>
+    <input type="password" id="password" name="password">
+
+    <input type="submit" value="提交">
+</form>

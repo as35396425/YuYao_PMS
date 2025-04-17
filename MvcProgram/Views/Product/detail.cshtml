@@ -1,0 +1,24 @@
+@model MvcProgram.Models.Product
+
+
+<h2>商品列表</h2>
+
+<ul>
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Name)</th>
+            <th>@Html.DisplayNameFor(model => model.price)</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+            <tr>
+                <td>@Html.DisplayFor(modelItem => Model.Name)</td>
+                <td>@Html.DisplayFor(modelItem => Model.price) 元</td>
+            </tr>
+        
+    </tbody>
+</table>
+@Html.ActionLink("返回主頁" ,"index")  
+</ul>

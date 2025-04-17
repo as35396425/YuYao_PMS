@@ -1,0 +1,54 @@
+
+@model MvcProgram.Models.User
+
+@{
+    ViewBag.Title = "註冊頁面" ;
+}
+
+<h1>@ViewBag.Title</h1>
+
+@Html.AntiForgeryToken()
+@using (Html.BeginForm("Register" ,"User2" ,FormMethod.Post))
+{   <ul>
+    <div>
+        @Html.Label("使用者名稱" )
+        @Html.TextBox("UserName" , null , new{ @class = "form-control" , required = "required"})
+        @Html.ValidationMessageFor(m => Model.UserName)
+    </div>
+    <div>
+        @Html.Label("密碼" )
+        @Html.Password("password" , null , new { @class = "form-control" , required = "required"})
+    </div>
+    
+    <!-- 直接顯示Model Name-->
+    <!-- 後面帶For 代表強型別，會根據Model的屬性去建立html-->
+    
+    <div>
+        <label>
+            @Html.DisplayNameFor(model => Model.Address)
+        </label>
+        @Html.TextBox("address" , null , new{ @class = "form-control" , required = "required"})
+        @Html.ValidationMessageFor(m => Model.Address,"",new { @class = "text-danger" ,@Color = "red"})
+
+    </div>
+    
+    <div>
+        <label>
+            @Html.DisplayNameFor(model => Model.age)
+        </label>
+        @Html.TextBox("age" , null , new{ @class = "form-control" , required = "required"})
+        @Html.ValidationMessageFor(m => Model.age,"",new { @class = "text-danger" ,@Color = "red"})
+    </div>
+
+    <div>
+        <label>
+            @Html.DisplayNameFor(model => Model.BirthDay)
+        </label>
+        @Html.TextBoxFor(m => Model.BirthDay , null , new{ @class = "form-control" ,Type="date", required = "required"})
+        @Html.ValidationMessageFor(m => Model.BirthDay,null,new { @class = "text-danger" ,@Color = "red"})
+
+    </div>
+    </ul>
+    <input type="submit" value="提交">
+}
+

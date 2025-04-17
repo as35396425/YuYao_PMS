@@ -1,0 +1,31 @@
+
+@model MvcProgram.Models.User
+
+@{
+    ViewBag.Title = "註冊頁面" ;
+}
+
+<h1>@ViewBag.Title</h1>
+
+@Html.AntiForgeryToken()
+@using (Html.BeginForm("Login" ,"User2" ,FormMethod.Post))
+{   <ul>
+    <div>
+        @Html.Label("使用者名稱" )
+        @Html.TextBox("username" , null , new{ @class = "form-control" , required = "required"})
+        @Html.ValidationMessageFor(m => Model.UserName)
+    </div>
+    <div>
+        @Html.Label("密碼" )
+        @Html.Password("password" , null , new { @class = "form-control" , required = "required"})
+    </div>
+    
+    <!-- 直接顯示Model Name-->
+    <!-- 後面帶For 代表強型別，會根據Model的屬性去建立html-->
+
+
+
+    </ul>
+    <input type="submit" value="提交">
+}
+
