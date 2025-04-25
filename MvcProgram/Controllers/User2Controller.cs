@@ -39,7 +39,7 @@ namespace MvcProgram.Controllers
             // var model = _context.User.Find(user.UserName) ; 
 
             applicationUser indentityUser = new applicationUser
-            {
+            {   
                 UserName = user.UserName,
                 age = user.age,
                 Address = user.Address,
@@ -55,9 +55,15 @@ namespace MvcProgram.Controllers
             if (result.Succeeded)
                 return Ok("註冊成功");
             else
-                return BadRequest(result.Errors);
-
-
+            {   
+                foreach (var err in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty , err.Description) ; 
+                }
+                
+                return View(user);
+            }
+                
         }
         [HttpGet]
         public IActionResult Login()
@@ -70,7 +76,7 @@ namespace MvcProgram.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(User user)
+        public async Task<IActionResult> Login(User user , string? returnUrl = null)
         {
 
             var model = await _userManager.FindByNameAsync(user.UserName);
@@ -109,7 +115,7 @@ namespace MvcProgram.Controllers
                 authProperties);
             
 
-            return Ok("登入成功");
+            return Redirect("/Product");
 
 
         }

@@ -23,11 +23,13 @@ namespace MvcProgram.Controllers
             return View(db) ; 
         }
         [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
+        
         [HttpGet]
         public  IActionResult create(){
             
             return View();
         }
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
         [HttpPost]
         public async Task<IActionResult> create(Models.Product model){
             _context.Add(model) ; 
