@@ -14,7 +14,7 @@ using MvcProgram.Models;
 public class applicationUser : IdentityUser
 {
 
-[Required(ErrorMessage ="地址不可空")]
+[Required(ErrorMessage ="地址不可空白")]
 public string? Address  {get ; set ; }
 
 [Required(ErrorMessage ="出生日期不可空")]

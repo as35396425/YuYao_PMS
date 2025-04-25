@@ -85,12 +85,6 @@ D:\program\Myprogram1\MvcProgram\obj\Debug\net9.0\compressed\sjvc2lkiof-2sir879b
 D:\program\Myprogram1\MvcProgram\obj\Debug\net9.0\staticwebassets.build.json
 D:\program\Myprogram1\MvcProgram\obj\Debug\net9.0\staticwebassets.development.json
 D:\program\Myprogram1\MvcProgram\obj\Debug\net9.0\staticwebassets.build.endpoints.json
-D:\program\Myprogram1\MvcProgram\obj\Debug\net9.0\staticwebassets\msbuild.MvcProgram.Microsoft.AspNetCore.StaticWebAssets.props
-D:\program\Myprogram1\MvcProgram\obj\Debug\net9.0\staticwebassets\msbuild.MvcProgram.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
-D:\program\Myprogram1\MvcProgram\obj\Debug\net9.0\staticwebassets\msbuild.build.MvcProgram.props
-D:\program\Myprogram1\MvcProgram\obj\Debug\net9.0\staticwebassets\msbuild.buildMultiTargeting.MvcProgram.props
-D:\program\Myprogram1\MvcProgram\obj\Debug\net9.0\staticwebassets\msbuild.buildTransitive.MvcProgram.props
-D:\program\Myprogram1\MvcProgram\obj\Debug\net9.0\staticwebassets.pack.json
 D:\program\Myprogram1\MvcProgram\obj\Debug\net9.0\MvcProgram.dll
 D:\program\Myprogram1\MvcProgram\obj\Debug\net9.0\refint\MvcProgram.dll
 D:\program\Myprogram1\MvcProgram\obj\Debug\net9.0\MvcProgram.pdb
@@ -291,3 +285,4 @@ D:\program\Myprogram1\MvcProgram\obj\Debug\net9.0\compressed\a3ygkwa5zy-2z0ns9nr
 D:\program\Myprogram1\MvcProgram\obj\Debug\net9.0\compressed\nezrqnk58p-muycvpuwrr.gz
 D:\program\Myprogram1\MvcProgram\obj\Debug\net9.0\compressed\v0zgfp0y55-87fc7y1x7t.gz
 D:\program\Myprogram1\MvcProgram\obj\Debug\net9.0\compressed\yfc7ypekbg-mlv21k5csn.gz
+D:\program\Myprogram1\MvcProgram\obj\Debug\net9.0\staticwebassets.build.json.cache
