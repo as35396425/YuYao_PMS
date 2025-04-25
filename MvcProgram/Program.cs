@@ -13,14 +13,11 @@ options.UseSqlite(builder.Configuration.GetConnectionString("ProductContext")));
 builder.Services.AddDbContext<IdentityContext>(options =>
 options.UseSqlite(builder.Configuration.GetConnectionString("ProductContext")));
 
-builder.Services.Configure<Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionOptions>(options =>
-{
-    options.HttpsPort = 5001; // 替換為你的實際HTTPS端口
-});
+
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(option=> {
-        option.LoginPath = new PathString("/user2/login") ; 
+        //option.LoginPath = new PathString("/user2/login") ; 
         option.AccessDeniedPath =new PathString ("/user2/login"); // 可選：沒有權限時導向
 
     });
