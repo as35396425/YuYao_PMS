@@ -16,73 +16,95 @@ namespace MvcProgram.Controllers
 {
     public class UserController : Controller
     {
-        private ProductContext _context ; 
-       // private readonly UserManager<IdentityUser> _userManager;
+        private readonly IdentityContext _context;
+        private readonly UserManager<applicationUser> _userManager;
+        SignInManager<applicationUser> _signInManager;
 
-        public UserController(ProductContext context){
-            _context = context ; 
-             
+        public UserController(UserManager<applicationUser> userManager, SignInManager<applicationUser> signInManager)
+        {
+            _userManager = userManager;
+            _signInManager = signInManager;
+
         }
-        
+
         [HttpGet]
-        public IActionResult register(){
-            return View() ; 
+        public IActionResult register()
+        {
+
+            return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> register(User user){
-            
-            
-            var model = _context.User.Find(user.UserName) ; 
-                
-            
-            //var indentityUser = new IdentityUser { UserName = user.UserName };
+        public async Task<IActionResult> register(User user)
+        {
 
-            //var result = await _userManager.CreateAsync(indentityUser, user.Password);
+            // var model = _context.User.Find(user.UserName) ; 
+
+            applicationUser indentityUser = new applicationUser
+            {
+                UserName = user.UserName,
+                age = user.age,
+                Address = user.Address,
+                BirthDay = user.BirthDay
+            };
+
+            var result = await _userManager.CreateAsync(indentityUser, user.Password);
             //var model = _context.User.Where(m => user.UserName == m.UserName && user.Password == m.Password ).FirstOrDefault();
 
+            //_context.Add(user);    
+            //await _context.SaveChangesAsync();
+
+            if (result.Succeeded)
+                return Ok("註冊成功");
+            else
+                return BadRequest(result.Errors);
 
 
-            if (model != null){
-                return Content($"{model.UserName}已經存在") ; 
-            }
-
-            _context.Add(user);    
-            await _context.SaveChangesAsync();
-            
-            return Ok($"{model.UserName}成功註冊") ; 
-            
-        
         }
-                [HttpGet]
-        public IActionResult Login(){
-            
+        [HttpGet]
+        public IActionResult Login()
+        {
+
+            //aaaaaaaa As6295638
 
 
-
-            return View() ; 
+            return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(User user){
-            
-            var model = _context.User.Where(m => user.UserName == m.UserName && user.Password == m.Password ).FirstOrDefault();
-            
-            if (model == null){
-                return Content("用戶不存在或密碼錯誤");
+        public async Task<IActionResult> Login(User user)
+        {
+
+            var model = await _userManager.FindByNameAsync(user.UserName);
+            ;
+
+            // if (model == null)
+            // {
+            //     return BadRequest(model.UserName);
+            // }
+
+            var isLogin = await _userManager.CheckPasswordAsync(model, user.Password);
+            if (!isLogin)
+            {
+                return BadRequest("密碼錯誤");
             }
+
+            var result = await _signInManager.PasswordSignInAsync(model, user.Password, isPersistent: true, lockoutOnFailure: false);
+            await _signInManager.SignInAsync(model, isPersistent: false);
+
             var claims = new List<Claim>{
                 new Claim(ClaimTypes.Name ,model.UserName),
                 new Claim(type : "Age" , model.age.ToString()),
             };
-            var claimsIdentity = new ClaimsIdentity(claims ,  CookieAuthenticationDefaults.AuthenticationScheme); 
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
 
 
-            var authProperties = new AuthenticationProperties{
-                    IsPersistent = true,
-                    ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30),
-                    AllowRefresh = true
+            var authProperties = new AuthenticationProperties
+            {
+                IsPersistent = true,
+                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30),
+                AllowRefresh = true
             };
 
             await HttpContext.SignInAsync(
@@ -90,10 +112,18 @@ namespace MvcProgram.Controllers
                 new ClaimsPrincipal(claimsIdentity),
                 authProperties);
 
-            
-            return Ok(user) ; 
-        
+            var username = await _userManager.GetUserAsync(User);
+            //return Ok(User.Identity.Name);
+            return Redirect("/Product/index");
 
+
+        }
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return Redirect("/User/Login");
         }
     }
 }

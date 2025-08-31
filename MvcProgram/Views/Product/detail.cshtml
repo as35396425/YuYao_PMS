@@ -1,24 +1,47 @@
 @model MvcProgram.Models.Product
 
+@{
+    ViewData["Title"] = "商品詳情";
+}
 
-<h2>商品列表</h2>
+<div class="container mt-5">
+    <div class="text-center mb-4">
+        <h1 class="display-5 text-primary fw-bold">商品詳情</h1>
+        <p class="text-muted">查看商品的完整資訊</p>
+    </div>
 
-<ul>
-<table class="table">
-    <thead>
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.Name)</th>
-            <th>@Html.DisplayNameFor(model => model.price)</th>
-        </tr>
-    </thead>
-    <tbody>
-        
-            <tr>
-                <td>@Html.DisplayFor(modelItem => Model.Name)</td>
-                <td>@Html.DisplayFor(modelItem => Model.price) 元</td>
-            </tr>
-        
-    </tbody>
-</table>
-@Html.ActionLink("返回主頁" ,"index")  
-</ul>
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <table class="table table-bordered align-middle">
+                <tbody>
+                    <tr>
+                        <th class="table-secondary" style="width: 20%;">@Html.DisplayNameFor(model => model.Name)</th>
+                        <td>@Html.DisplayFor(model => model.Name)</td>
+                    </tr>
+                    <tr>
+                        <th class="table-secondary">@Html.DisplayNameFor(model => model.price)</th>
+                        <td>@Html.DisplayFor(model => model.price) 元</td>
+                    </tr>
+                    <tr>
+                        <th class="table-secondary">@Html.DisplayNameFor(model => model.Description)</th>
+                        <td>@Html.DisplayFor(model => model.Description)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="d-flex justify-content-between mt-4">
+                <a asp-action="Index" class="btn btn-secondary">
+                    ⬅ 返回主頁
+                </a>
+                <div>
+                    <a asp-action="Edit" asp-route-id="@Model.ProductID" class="btn btn-warning me-2">
+                        ✏ 編輯
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@Model.ProductID" class="btn btn-danger">
+                        🗑 刪除
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

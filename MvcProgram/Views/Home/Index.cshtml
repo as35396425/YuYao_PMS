@@ -2,7 +2,31 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 text-primary fw-bold">商品管理系統</h1>
+        <p class="lead text-muted">
+            此網站幫助使用者管理商品，並且每位使用者的資料均獨立保存
+        </p>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <h3 class="card-title text-center text-secondary mb-4">主要特色</h3>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    ✅ 使用者註冊與登入
+                </li>
+                <li class="list-group-item">
+                    ✅ 使用者可以新增、修改、刪除自己的商品
+                </li>
+                <li class="list-group-item">
+                    ✅ 使用 Entity Framework Core 進行資料庫存取
+                </li>
+                <li class="list-group-item">
+                    ✅ 各使用者只能看到自己的資料
+                </li>
+            </ul>
+        </div>
+    </div>
 </div>

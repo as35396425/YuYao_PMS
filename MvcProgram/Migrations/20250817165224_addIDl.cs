@@ -5,7 +5,7 @@
 namespace MvcProgram.Migrations
 {
     /// <inheritdoc />
-    public partial class SetProductsCol : Migration
+    public partial class addIDl : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -1,31 +1,56 @@
-
 @model MvcProgram.Models.User
 
 @{
-    ViewBag.Title = "註冊頁面" ;
+    ViewBag.Title = "使用者登入頁面";
 }
 
-<h1>@ViewBag.Title</h1>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
 
-@Html.AntiForgeryToken()
-@using (Html.BeginForm("Login" ,"User" ,FormMethod.Post))
-{   <ul>
-    <div>
-        @Html.Label("使用者名稱" )
-        @Html.TextBox("username" , null , new{ @class = "form-control" , required = "required"})
-        @Html.ValidationMessageFor(m => Model.UserName)
-    </div>
-    <div>
-        @Html.Label("密碼" )
-        @Html.Password("password" , null , new { @class = "form-control" , required = "required"})
-    </div>
-    
-    <!-- 直接顯示Model Name-->
-    <!-- 後面帶For 代表強型別，會根據Model的屬性去建立html-->
+<style>
+  .full-center {
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .form-box {
+    width: 100%;
+    max-width: 400px;
+    padding: 2rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+  .register-link {
+    margin-top: 1rem;
+    text-align: center;
+  }
+</style>
 
+<div class="full-center">
+  <div class="form-box">
+    <h1 class="text-center mb-4">@ViewBag.Title</h1>
+    @Html.AntiForgeryToken()
+    @using (Html.BeginForm("Login", "User", FormMethod.Post))
+    {
+      <div class="mb-3">
+        @Html.Label("username", "使用者名稱")
+        @Html.TextBox("username", null, new { @class = "form-control", required = "required" })
+        @Html.ValidationMessageFor(m => Model.UserName, "", new { @class = "text-danger" })
+      </div>
 
+      <div class="mb-3">
+        @Html.Label("password", "密碼")
+        @Html.Password("password", null, new { @class = "form-control", required = "required" })
+        @Html.ValidationMessageFor(m => Model.Password, "", new { @class = "text-danger" })
+      </div>
 
-    </ul>
-    <input type="submit" value="提交">
-}
+      <button type="submit" class="btn btn-primary w-100">登入</button>
 
+      <div class="register-link">
+        <span>還沒帳號？</span>
+        @Html.ActionLink("註冊", "Register", "User", null, new { @class = "btn btn-link" })
+      </div>
+    }
+  </div>
+</div>

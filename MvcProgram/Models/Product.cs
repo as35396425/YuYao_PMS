@@ -2,11 +2,15 @@ namespace MvcProgram.Models;
 
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 public class Product
 {
 [Key]
+public int? ProductID{get;set;}
+
 [DisplayName("商品名稱")]
 [Required(ErrorMessage ="商品不可為空")]
 public string? Name {get ; set ; }
@@ -15,6 +19,16 @@ public string? Name {get ; set ; }
 [Required(ErrorMessage ="價格不可為空")]
 [Range(0 , int.MaxValue , ErrorMessage ="價格必須為非負整數")]
 public int? price {get ; set ; }
+
+[DisplayName("商品描述")]
+public string? Description { get; set; }
+
+public applicationUser? User { get; set; }
+
+[ForeignKey(nameof(User))]
+public string? UID{get;set;}
+
+
 
 }
 
@@ -40,5 +54,7 @@ public  DateTime BirthDay  {get ; set ; }
 [Range(0,120,ErrorMessage ="需要在1~120範圍內")]
 
 public int? age{get; set;}
+
+
 }
 

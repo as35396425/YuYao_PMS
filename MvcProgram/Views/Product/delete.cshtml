@@ -1,27 +1,40 @@
 @model MvcProgram.Models.Product
 
+@{
+    ViewData["Title"] = "商品列表";
+}
 
+<div class="container mt-5">
+    <div class="text-center mb-4">
+        <h1 class="display-5 text-primary fw-bold">商品列表</h1>
+        <p class="text-muted">在此查看或刪除你的商品</p>
+    </div>
 
-
-<h2>商品列表</h2>
-
-<ul>
-<table>
-    <thead>
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.Name)</th>
-            <th>@Html.DisplayNameFor(model => model.price)</th>
-        </tr>
-    </thead>
-    <tbody>
-            <tr>
-                <td>@Html.DisplayFor(modelItem => Model.Name)</td>
-                <td>@Html.DisplayFor(modelItem => Model.price) 元</td>
-            </tr>
-            <tr><Form asp-action="delete" method="POST">
-                <input type="hidden" asp-for= "Name" />
-                <input type ="submit" value="刪除">
-            </Form></tr>
-    </tbody>
-</table>
-</ul>
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <table class="table table-bordered table-hover">
+                <thead class="table-secondary">
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.Name)</th>
+                        <th>@Html.DisplayNameFor(model => model.price)</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => Model.Name)</td>
+                        <td>@Html.DisplayFor(modelItem => Model.price) 元</td>
+                        <td>
+                            <form asp-action="Delete" method="POST" class="d-inline">
+                                <input type="hidden" asp-for="ProductID" />
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    刪除
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

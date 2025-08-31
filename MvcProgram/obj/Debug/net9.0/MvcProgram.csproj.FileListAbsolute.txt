@@ -18,7 +18,6 @@ D:\program\Myprogram1\MvcProgram\obj\Debug\net9.0\MvcProgram.sourcelink.json
 D:\program\Myprogram1\MvcProgram\obj\Debug\net9.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
 D:\program\Myprogram1\MvcProgram\obj\Debug\net9.0\scopedcss\bundle\MvcProgram.styles.css
 D:\program\Myprogram1\MvcProgram\obj\Debug\net9.0\scopedcss\projectbundle\MvcProgram.bundle.scp.css
-D:\program\Myprogram1\MvcProgram\obj\Debug\net9.0\compressed\nlqcb80ce5-b9sayid5wm.gz
 D:\program\Myprogram1\MvcProgram\obj\Debug\net9.0\compressed\4y9eovswxt-61n19gt1b8.gz
 D:\program\Myprogram1\MvcProgram\obj\Debug\net9.0\compressed\olq3eaa0qw-xtxxf3hu2r.gz
 D:\program\Myprogram1\MvcProgram\obj\Debug\net9.0\compressed\brzfho4gdu-bqjiyaj88i.gz
@@ -286,3 +285,12 @@ D:\program\Myprogram1\MvcProgram\obj\Debug\net9.0\compressed\nezrqnk58p-muycvpuw
 D:\program\Myprogram1\MvcProgram\obj\Debug\net9.0\compressed\v0zgfp0y55-87fc7y1x7t.gz
 D:\program\Myprogram1\MvcProgram\obj\Debug\net9.0\compressed\yfc7ypekbg-mlv21k5csn.gz
 D:\program\Myprogram1\MvcProgram\obj\Debug\net9.0\staticwebassets.build.json.cache
+D:\program\Myprogram1\MvcProgram\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\program\Myprogram1\MvcProgram\bin\Debug\net9.0\Microsoft.IdentityModel.Abstractions.dll
+D:\program\Myprogram1\MvcProgram\bin\Debug\net9.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\program\Myprogram1\MvcProgram\bin\Debug\net9.0\Microsoft.IdentityModel.Logging.dll
+D:\program\Myprogram1\MvcProgram\bin\Debug\net9.0\Microsoft.IdentityModel.Protocols.dll
+D:\program\Myprogram1\MvcProgram\bin\Debug\net9.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\program\Myprogram1\MvcProgram\bin\Debug\net9.0\Microsoft.IdentityModel.Tokens.dll
+D:\program\Myprogram1\MvcProgram\bin\Debug\net9.0\System.IdentityModel.Tokens.Jwt.dll
+D:\program\Myprogram1\MvcProgram\obj\Debug\net9.0\compressed\nlqcb80ce5-4utvjv8znp.gz

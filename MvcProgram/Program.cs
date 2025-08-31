@@ -6,9 +6,10 @@ var builder = WebApplication.CreateBuilder(args);
 var connectString =builder.Configuration.GetConnectionString("ProductContext"); 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IProductService, ProductService>();
 
-builder.Services.AddDbContext<ProductContext>(options =>
-options.UseSqlite(builder.Configuration.GetConnectionString("ProductContext")));
+// builder.Services.AddDbContext<ProductContext>(options =>
+// options.UseSqlite(builder.Configuration.GetConnectionString("ProductContext")));
 
 builder.Services.AddDbContext<IdentityContext>(options =>
 options.UseSqlite(builder.Configuration.GetConnectionString("ProductContext")));
@@ -17,8 +18,8 @@ options.UseSqlite(builder.Configuration.GetConnectionString("ProductContext")));
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(option=> {
-        //option.LoginPath = new PathString("/user2/login") ; 
-        option.AccessDeniedPath =new PathString ("/user2/login"); // 可選：沒有權限時導向
+        option.LoginPath = new PathString("/user/login") ; 
+        option.AccessDeniedPath =new PathString ("/user/login"); // 可選：沒有權限時導向( 有權限 但不夠大)
 
     });
 builder.Services.AddDefaultIdentity<applicationUser>(options =>
