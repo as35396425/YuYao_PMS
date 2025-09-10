@@ -24,23 +24,28 @@ namespace MvcProgram.Controllers
             
         }
         public async Task<IActionResult> index(){
-            if(User == null)
-                return View("請登入");
+            if(User.Identity.IsAuthenticated == false)
+                return Unauthorized("請登入");
+
             var model = await _userManager.GetUserAsync(User);
             var db = await _context.Products.Where(m=>m.UID==model.Id)
             .ToListAsync();
 
             return View(db); 
         }
+
+
         [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
         [HttpGet]
         public  IActionResult create(){
-            
+            if(User.Identity.IsAuthenticated == false)
+                return Unauthorized("請登入");
             return View();
         }
-        [HttpPost]
+        [HttpPost]  
         public async Task<IActionResult> create(Models.Product model){
-            
+            if(User.Identity.IsAuthenticated == false)
+                return Unauthorized("請登入");
             _context.Add(model) ; 
             await _context.SaveChangesAsync();
             return RedirectToAction("index") ; 

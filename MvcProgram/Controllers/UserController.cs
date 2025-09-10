@@ -76,7 +76,7 @@ namespace MvcProgram.Controllers
         {
 
             var model = await _userManager.FindByNameAsync(user.UserName);
-            ;
+            
 
             // if (model == null)
             // {
