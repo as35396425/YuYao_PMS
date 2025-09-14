@@ -2,6 +2,10 @@ using MvcProgram.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 var connectString =builder.Configuration.GetConnectionString("ProductContext"); 
 // Add services to the container.
@@ -14,14 +18,21 @@ builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddDbContext<IdentityContext>(options =>
 options.UseSqlite(builder.Configuration.GetConnectionString("ProductContext")));
 
+builder.Configuration.AddJsonFile(
+    "Properties/appsettings.json",
+    optional: true,
+    reloadOnChange: true
+    );
+
+var JWT_Token = builder.Configuration.GetSection("JWT");
 
 
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(option=> {
-        option.LoginPath = new PathString("/user/login") ; 
-        option.AccessDeniedPath =new PathString ("/user/login"); // 可選：沒有權限時導向( 有權限 但不夠大)
+// builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+//     .AddCookie(option=> {
+//         option.LoginPath = new PathString("/user/login") ; 
+//         option.AccessDeniedPath =new PathString ("/user/login"); // 可選：沒有權限時導向( 有權限 但不夠大)
 
-    });
+//     });
 builder.Services.AddDefaultIdentity<applicationUser>(options =>
 {
     options.Password.RequireDigit = true;
@@ -31,8 +42,43 @@ builder.Services.AddDefaultIdentity<applicationUser>(options =>
     options.Password.RequireLowercase = true;
 })
 .AddEntityFrameworkStores<IdentityContext>();
-                
-                
+
+
+builder.Services.AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+
+        //Challenge 是甚麼東西
+        //為甚麼要設定authenticateScheme
+    }
+
+).AddJwtBearer(options =>
+{
+    options.SaveToken = true;
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JWT_Token["Key"]))
+    };
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            if (context.Request.Cookies.ContainsKey("jwt"))
+            {
+                context.Token = context.Request.Cookies["jwt"];
+            }
+            return Task.CompletedTask;
+        }
+    };
+});
+
 
 
 
@@ -58,6 +104,5 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
-
 
 app.Run();

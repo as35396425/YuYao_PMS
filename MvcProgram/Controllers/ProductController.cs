@@ -1,12 +1,16 @@
 using System.Diagnostics;
+using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Configuration.UserSecrets;
+using Microsoft.IdentityModel.Tokens;
 using MvcProgram.Models;
 
 
@@ -23,32 +27,39 @@ namespace MvcProgram.Controllers
             _userManager = userManager;
             
         }
-        public async Task<IActionResult> index(){
+        [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> index()
+        {
+
             if(User.Identity.IsAuthenticated == false)
                 return Unauthorized("請登入");
+            var id = User.FindFirst("UID")?.Value;
+            //var model = await _userManager.GetUserAsync(User);
+            var db = await _context.Products.Where(m => m.UID == id).ToListAsync();
+            return View(db);
 
-            var model = await _userManager.GetUserAsync(User);
-            var db = await _context.Products.Where(m=>m.UID==model.Id)
-            .ToListAsync();
-
-            return View(db); 
         }
 
 
-        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
+       
         [HttpGet]
         public  IActionResult create(){
-            if(User.Identity.IsAuthenticated == false)
-                return Unauthorized("請登入");
+            // if(User.Identity.IsAuthenticated == false)
+            //     return Unauthorized("請登入");
             return View();
         }
-        [HttpPost]  
-        public async Task<IActionResult> create(Models.Product model){
-            if(User.Identity.IsAuthenticated == false)
+
+        [HttpPost]
+         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]  
+        public async Task<IActionResult> create(Models.Product model)
+        {
+            if (User.Identity.IsAuthenticated == false)
                 return Unauthorized("請登入");
-            _context.Add(model) ; 
+
+            _context.Add(model);
             await _context.SaveChangesAsync();
-            return RedirectToAction("index") ; 
+            return RedirectToAction("index");
         }
 
         [HttpGet]
@@ -57,35 +68,55 @@ namespace MvcProgram.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> createToUser(Models.Product model){
-            var user = await _userManager.GetUserAsync(User);
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> createToUser(Models.Product model)
+        {
+            if (User.Identity.IsAuthenticated == false)
+            {
+                return BadRequest("請登入");
+            }
+
+            string userID = User.FindFirst("UID")?.Value;
+            model.UID = userID;
+            //var Identity = User.Identity;
+            //var user = await _userManager.GetUserAsync();
             //Debug.WriteLine(User.Identity.Name);
 
-            model.UID=user.Id;
+            //model.UID = user.Name;
             _context.Add(model);
-            
+
             await _context.SaveChangesAsync();
-            return RedirectToAction("index") ; 
+            return RedirectToAction("index");
         }
+
+
         [HttpGet]
-        public IActionResult edit(int? id){
-            string userID = _userManager.GetUserId(User).ToString();
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public IActionResult edit(int? id) {
+
+            string userID = User.FindFirst("UID")?.Value;
+            //string userID = _userManager.GetUserId(User).ToString();
+
             var model = _context.Products.Where(m => m.ProductID == id).FirstOrDefault();
 
-            if(model.UID != userID)
-                return BadRequest("沒有權限");
+            if (model.UID != userID)
+                return BadRequest($"沒有權限{userID}");
 
-            return View(model); 
+            return View(model);
         }
 
         [HttpPost]
-    
-        public async Task<IActionResult> edit(Models.Product model) {
-            string userID = _userManager.GetUserId(User).ToString();
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> edit(Models.Product model)
+        {
+            if (User.Identity.IsAuthenticated == false)
+                return Unauthorized("請登入");
 
+            string userID = User.FindFirst("UID")?.Value;
+            
             //Console.WriteLine(model.Name);
             var data = _context.Products.Find(model.ProductID);
-            if(data.UID != userID)
+            if (data.UID != userID)
                 return BadRequest("沒有權限");
 
 
@@ -108,7 +139,10 @@ namespace MvcProgram.Controllers
         [HttpGet]
         public IActionResult delete(int? id){
             var model = _context.Products.Find(id);
-            
+            string userID = User.FindFirst("UID")?.Value;
+            if (model.UID != userID)
+                return BadRequest($"沒有權限{userID}");
+
             return View(model) ; 
         }
 
@@ -117,7 +151,9 @@ namespace MvcProgram.Controllers
             
 
             var data = _context.Products.Find(model.ProductID);
-            
+            if(data.UID != User.FindFirst("UID")?.Value)
+                return BadRequest("沒有權限");
+                
             if (data != null)
             {
                 _context.Remove(data);
@@ -125,7 +161,7 @@ namespace MvcProgram.Controllers
                 return RedirectToAction("Index");
             }
             else
-            {   
+            {
                 return RedirectToAction($"delete/{model.ProductID}");
             }
         }

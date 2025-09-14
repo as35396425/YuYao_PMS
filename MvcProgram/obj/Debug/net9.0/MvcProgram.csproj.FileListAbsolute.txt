@@ -294,3 +294,4 @@ D:\program\Myprogram1\MvcProgram\bin\Debug\net9.0\Microsoft.IdentityModel.Protoc
 D:\program\Myprogram1\MvcProgram\bin\Debug\net9.0\Microsoft.IdentityModel.Tokens.dll
 D:\program\Myprogram1\MvcProgram\bin\Debug\net9.0\System.IdentityModel.Tokens.Jwt.dll
 D:\program\Myprogram1\MvcProgram\obj\Debug\net9.0\compressed\nlqcb80ce5-4utvjv8znp.gz
+D:\program\Myprogram1\MvcProgram\bin\Debug\net9.0\Properties\appSettings.json
