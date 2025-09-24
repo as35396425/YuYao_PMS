@@ -31,8 +31,9 @@ namespace MvcProgram.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> index()
         {
+            
 
-            if(User.Identity.IsAuthenticated == false)
+            if (User.Identity.IsAuthenticated == false)
                 return Unauthorized("請登入");
             var id = User.FindFirst("UID")?.Value;
             //var model = await _userManager.GetUserAsync(User);

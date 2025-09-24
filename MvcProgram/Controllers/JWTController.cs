@@ -22,12 +22,12 @@ namespace MvcProgram.Controllers
         private readonly IdentityContext _context;
         private readonly UserManager<applicationUser> _userManager;
         SignInManager<applicationUser> _signInManager;
-
-        public JWTController(UserManager<applicationUser> userManager, SignInManager<applicationUser> signInManager)
+        IConfiguration _configuration;
+        public JWTController(UserManager<applicationUser> userManager, SignInManager<applicationUser> signInManager , IConfiguration configuration)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-
+            _configuration = configuration;
         }
 
         [HttpGet]
@@ -131,9 +131,10 @@ namespace MvcProgram.Controllers
         }
         
         public string GenerateJwtToken(string userName)
-        {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("KagiYamaHina Is My wife HAHAHAHAHAHAHAHAHAHAHAHAHAHA"));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+        {   
+            var JWTsetting = _configuration.GetSection("JWT");
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JWTsetting["Key"]));
+            var credentials = new SigningCredentials(securityKey, JWTsetting["alg"]);
 
             var claims = new[]
             {
@@ -142,10 +143,10 @@ namespace MvcProgram.Controllers
             };
 
             var token = new JwtSecurityToken(
-                issuer: "localhost",
-                audience: "localhost",
+                issuer: JWTsetting["Issuer"],
+                audience: JWTsetting["Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(30),
+                expires: DateTime.Now.AddMinutes(int.Parse(JWTsetting["ExpireMinutes"] ?? "30")),
                 signingCredentials: credentials
             );
 
