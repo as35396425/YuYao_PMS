@@ -1,5 +1,5 @@
 <img width="1649" height="633" alt="image" src="https://github.com/user-attachments/assets/d2b7641f-5d12-462f-982b-12d06b829a08" />
-XXXXX
+
 # JWT更新
 # 商品管理系統 (Product Management System)
 
