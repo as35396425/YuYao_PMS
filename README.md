@@ -1,6 +1,6 @@
 <img width="1649" height="633" alt="image" src="https://github.com/user-attachments/assets/d2b7641f-5d12-462f-982b-12d06b829a08" />
 
-
+# JWT更新
 # 商品管理系統 (Product Management System)
 
 這是一個使用 **ASP.NET Core MVC** 與 **Entity Framework Core** 開發的商品管理系統，提供使用者註冊登入，並能夠新增、編輯、刪除與查詢商品資料。  
