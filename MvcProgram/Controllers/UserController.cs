@@ -11,6 +11,11 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace MvcProgram.Controllers
 {
@@ -19,11 +24,12 @@ namespace MvcProgram.Controllers
         private readonly IdentityContext _context;
         private readonly UserManager<applicationUser> _userManager;
         SignInManager<applicationUser> _signInManager;
-
-        public UserController(UserManager<applicationUser> userManager, SignInManager<applicationUser> signInManager)
+        IConfiguration _config;
+        public UserController(UserManager<applicationUser> userManager, SignInManager<applicationUser> signInManager, IConfiguration config)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _config = config;
 
         }
 
@@ -47,13 +53,12 @@ namespace MvcProgram.Controllers
                 Address = user.Address,
                 BirthDay = user.BirthDay
             };
+            
+            if (_userManager.FindByNameAsync(user.UserName).Result != null)
+                return BadRequest("帳號已存在");
+
 
             var result = await _userManager.CreateAsync(indentityUser, user.Password);
-            //var model = _context.User.Where(m => user.UserName == m.UserName && user.Password == m.Password ).FirstOrDefault();
-
-            //_context.Add(user);    
-            //await _context.SaveChangesAsync();
-
             if (result.Succeeded)
                 return Ok("註冊成功");
             else
@@ -76,44 +81,29 @@ namespace MvcProgram.Controllers
         {
 
             var model = await _userManager.FindByNameAsync(user.UserName);
-            
-
-            // if (model == null)
-            // {
-            //     return BadRequest(model.UserName);
-            // }
 
             var isLogin = await _userManager.CheckPasswordAsync(model, user.Password);
             if (!isLogin)
             {
                 return BadRequest("密碼錯誤");
             }
+            var UID = _userManager.FindByNameAsync(user.UserName).Result.Id;
+            var token = GenerateJwtToken(user , UID);
+            var bearer = new JwtSecurityTokenHandler().WriteToken(token);
 
-            var result = await _signInManager.PasswordSignInAsync(model, user.Password, isPersistent: true, lockoutOnFailure: false);
-            await _signInManager.SignInAsync(model, isPersistent: false);
-
-            var claims = new List<Claim>{
-                new Claim(ClaimTypes.Name ,model.UserName),
-                new Claim(type : "Age" , model.age.ToString()),
-            };
-            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-
-
-            var authProperties = new AuthenticationProperties
+            Response.Cookies.Append("jwt", bearer, new CookieOptions
             {
-                IsPersistent = true,
-                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30),
-                AllowRefresh = true
-            };
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTimeOffset.Now.AddMinutes(30)
+            });
 
-            await HttpContext.SignInAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme,
-                new ClaimsPrincipal(claimsIdentity),
-                authProperties);
-
-            var username = await _userManager.GetUserAsync(User);
-            //return Ok(User.Identity.Name);
+            return Ok(new
+            {
+                bearer,
+                expiration = token.ValidTo
+            });
             return Redirect("/Product/index");
 
 
@@ -121,9 +111,37 @@ namespace MvcProgram.Controllers
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
-            await _signInManager.SignOutAsync();
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            //await _signInManager.SignOutAsync
+            //var exp = User.FindFirst(JwtRegisteredClaimNames.Exp)?.Value;
+            Response.Cookies.Delete("jwt");
+
+            //await HttpContext.SignOutAsync(JwtBearerDefaults.AuthenticationScheme);
             return Redirect("/User/Login");
+        }
+
+         public JwtSecurityToken  GenerateJwtToken(User user , string id)
+        {
+            var JWT = _config.GetSection("JWT");
+
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JWT["Key"]));
+            var credentials = new SigningCredentials(securityKey,JWT["alg"]);
+
+            var claims = new[]
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(ClaimTypes.Name ,user.UserName),
+                new Claim(type : "UID" , id),
+            };
+            var token = new JwtSecurityToken(
+                //issuer: "localhost",
+                //audience: "localhost",
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(JWT.GetValue<int>("ExpInMin")),
+                signingCredentials: credentials
+            );
+
+            return token;
         }
     }
 }

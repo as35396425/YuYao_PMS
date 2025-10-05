@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "V+xed/+vKrk=",
+  "dgSpecHash": "2oL2lV3vCBc=",
   "success": true,
   "projectFilePath": "D:\\program\\Myprogram1\\MvcProgram\\MvcProgram.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\wow35\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
-    "C:\\Users\\wow35\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\9.0.8\\microsoft.aspnetcore.authentication.jwtbearer.9.0.8.nupkg.sha512",
+    "C:\\Users\\wow35\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\9.0.9\\microsoft.aspnetcore.authentication.jwtbearer.9.0.9.nupkg.sha512",
     "C:\\Users\\wow35\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\9.0.4\\microsoft.aspnetcore.cryptography.internal.9.0.4.nupkg.sha512",
     "C:\\Users\\wow35\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\9.0.4\\microsoft.aspnetcore.cryptography.keyderivation.9.0.4.nupkg.sha512",
     "C:\\Users\\wow35\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\9.0.4\\microsoft.aspnetcore.identity.entityframeworkcore.9.0.4.nupkg.sha512",

@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using MvcProgram.Models;
 public class ProductService : IProductService
 {
@@ -17,5 +18,10 @@ public class ProductService : IProductService
     {
         _context.Products.Add(form);
         return await _context.SaveChangesAsync() > 0;
+    }
+    public async Task<List<Product>> GetGreaterThanAvgPrice(string userId)
+    {   
+        double? avg = _context.Products.Average(p=>p.price);
+        return await _context.Products.Where(p => p.UID == userId && p.price >=avg ).ToListAsync();
     }
 }
